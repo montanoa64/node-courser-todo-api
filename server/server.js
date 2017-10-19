@@ -1,33 +1,44 @@
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
+//server.js responsible for our routes
+var {mongoose} = require('./db/mongoose');
+var {Todo} = require('./models/todo');
+var {User} = require('./models/user');
 
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+var app = express();
 
-//this like model from mvc
-var Todo = mongoose.model('Todo', {
-    text: {
-        //provide details
-        type: String
-    },
-    completed: {
-        //provide details
-        type: Boolean
-    },
-    completedAt: {
-        //provide details
-        type: Number
-    }
+
+app.post('/todos', (req, res) => {
+    
 });
 
-var otherTodo = new Todo({
+var port = 3000;
+app.listen(port, () => {
+    console.log('Started on port ', port);
 });
 
-otherTodo.save().then((doc) => {
-    console.log('Saved todo', doc);
-},(e) => {
-    console.log('unable to save todo');
-});
+
+
+// var user = new User({
+//     email: 'andsye@gjakd.com     '
+// });
+
+// user.save().then((doc) => {
+//     console.log('Saved User', doc);
+// },(e) => {
+//     console.log('Unable to save User', e);
+// });
+
+// var otherTodo = new Todo({
+//     text: '    Edit this video'
+// });
+
+// otherTodo.save().then((doc) => {
+//     console.log('Saved todo', doc);
+// },(e) => {
+//     console.log('unable to save todo', e);
+// });
 
 // var newTodo = new Todo({
 //     text: 'Cook dinner'
