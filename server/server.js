@@ -8,9 +8,21 @@ var {User} = require('./models/user');
 
 var app = express();
 
+//midle ware
+app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
-    
+    //request the stuff that got posted to the body 
+    var todo = new Todo({
+        text: req.body.text,
+        completed: req.body.completed
+    });
+    //save it to db
+    todo.save().then((doc) => {
+        res.send(doc); //what the user sees
+    },(e) =>{
+        res.status(400).send(e); //what user sees if not save to db
+    });
 });
 
 var port = 3000;
