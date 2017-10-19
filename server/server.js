@@ -15,7 +15,7 @@ app.post('/todos', (req, res) => {
     //request the stuff that got posted to the body 
     var todo = new Todo({
         text: req.body.text,
-        completed: req.body.completed
+     //   completed: req.body.completed
     });
     //save it to db
     todo.save().then((doc) => {
@@ -30,7 +30,9 @@ app.listen(port, () => {
     console.log('Started on port ', port);
 });
 
-
+module.exports = {
+    app
+};
 
 // var user = new User({
 //     email: 'andsye@gjakd.com     '
