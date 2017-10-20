@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const {MongoClient, ObjectID} = require ('mongodb');
 
 //server.js responsible for our routes
 var {mongoose} = require('./db/mongoose');
@@ -33,6 +34,22 @@ app.get('/todos', (req, res) => {
     },(e)=>{
         res.status(400).send(e);
     });
+});
+
+app.get('/todos/:id', (req,res) =>{
+    //have key value pairs
+    var id = req.params.id;
+    if(!ObjectID.isValid(id)){
+        //if id is not valid send a 404 error with an empty body
+        return res.status(404).send(); 
+    }
+    Todo.findById(id).then((todo)=>{
+        if(!todo){
+            return res.status(404).send();
+        }
+        res.send({todo});
+    }).catch((e)=>res.status(400).send());
+    
 });
 
 var port = 3000;
