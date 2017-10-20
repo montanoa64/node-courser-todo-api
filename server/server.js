@@ -11,6 +11,7 @@ var app = express();
 //midle ware
 app.use(bodyParser.json());
 
+//save the todos
 app.post('/todos', (req, res) => {
     //request the stuff that got posted to the body 
     var todo = new Todo({
@@ -22,6 +23,15 @@ app.post('/todos', (req, res) => {
         res.send(doc); //what the user sees
     },(e) =>{
         res.status(400).send(e); //what user sees if not save to db
+    });
+});
+
+//get all the todos to show to the user
+app.get('/todos', (req, res) => {
+    Todo.find().then((todos)=>{
+        res.send({todos});
+    },(e)=>{
+        res.status(400).send(e);
     });
 });
 
