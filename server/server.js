@@ -8,11 +8,37 @@ const {MongoClient, ObjectID} = require ('mongodb');
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
+var {Recipe} = require('./models/recipe');
+var {Pantry} = require('./models/pantry');
 
 var app = express();
 
 //midle ware
 app.use(bodyParser.json());
+
+app.post('/recipes',(req,res) => {
+    //var body = _.pick(req.body, '')
+    var recipe = new Recipe ({
+        name: req.body.name,
+        email: req.body.email,
+        ingredients: req.body.ingredients,
+        qtyOfIngredient: req.body.qtyOfIngredient
+    })
+    console.log(recipe);
+    recipe.save().then((doc) => {
+        res.send(doc);
+    },(e)=>{
+        res.status(400).send(e);
+    });
+});
+
+app.post('/users',(req,res) => {
+    var body = _.pick(req.body, ['email','password']);
+    var user = new User(body);
+    user.save().then((user) => {
+        res.send({user});
+    }).catch((e)=>res.status(400).send(e));
+});
 
 //save the todos
 app.post('/todos', (req, res) => {
@@ -33,6 +59,15 @@ app.post('/todos', (req, res) => {
 app.get('/todos', (req, res) => {
     Todo.find().then((todos)=>{
         res.send({todos});
+    },(e)=>{
+        res.status(400).send(e);
+    });
+});
+
+app.get('/pantry', (req,res) =>{
+    var email = req.body.email;
+    Pantry.find({email}).then((pantry)=>{
+        res.send({pantry});
     },(e)=>{
         res.status(400).send(e);
     });
