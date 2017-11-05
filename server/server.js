@@ -73,6 +73,14 @@ app.get('/pantry', (req,res) =>{
     });
 });
 
+app.get('/recipe', (req,res) =>{
+    Recipe.find().then((recipe)=>{
+        res.send({recipe});
+    },(e)=>{
+        res.status(400).send(e);
+    });
+});
+
 app.get('/todos/:id', (req,res) =>{
     //have key value pairs
     var id = req.params.id;
